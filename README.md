@@ -5,7 +5,7 @@ This repo is the poster-demo bundle for DetectiveSAM. It is intentionally narrow
 ## What is bundled
 
 - Inference checkpoints under `checkpoints/`
-- SAM2 config and weights under `sam2configs/`
+- SAM2 config under `sam2configs/`
 - Poster demo pairs under `demo/cocoglide/`, `demo/flux_test/`, and `demo/qwen_test/`
 - A drop-in single-image slot at `demo/user_image/demo_input.png`
 
@@ -21,6 +21,14 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+Then add the SAM2 Hiera Base Plus checkpoint at:
+
+```text
+sam2configs/sam2.1_hiera_base_plus.pt
+```
+
+The expected path is also documented in `sam2configs/README.md`.
 
 ## Poster Demo Flows
 
@@ -91,4 +99,5 @@ The `evaluate` command writes `summary.json` plus a few visualization examples u
 
 - The runtime selects `cuda` automatically when available and otherwise runs on CPU.
 - Checkpoint settings come from the YAML sidecars in `checkpoints/`; you only need the alias or checkpoint path.
+- The public repo does not bundle `sam2configs/sam2.1_hiera_base_plus.pt`; add that file locally before running inference.
 - This repo does not include training code or training-only dependencies.

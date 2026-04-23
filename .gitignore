@@ -5,3 +5,4 @@ __pycache__/
 venv/
 .pytest_cache/
 outputs/
+sam2configs/sam2.1_hiera_base_plus.pt
