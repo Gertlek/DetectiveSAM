@@ -2,7 +2,11 @@
 
 This public repo does not bundle the SAM2 Hiera Base Plus checkpoint.
 
-To run inference, add the checkpoint file to this directory with this exact name:
+The full runnable bundle is hosted on Hugging Face:
+
+- https://huggingface.co/Gertlek/DetectiveSAM
+
+To run inference from this GitHub checkout, download the checkpoint file from Hugging Face and place it in this directory with this exact name:
 
 - `sam2.1_hiera_base_plus.pt`
 

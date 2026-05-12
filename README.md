@@ -1,10 +1,12 @@
-# DetectiveSAM Poster Demo
+# DetectiveSAM
 
-This repo is the poster-demo bundle for DetectiveSAM. It is intentionally narrow: inference only, bundled checkpoints, and a small set of ready-to-run examples for live demos.
+DetectiveSAM is an inference-only image forgery localization bundle built around SAM2. This GitHub repo keeps the lightweight code, configs, and demo assets. The full runnable bundle with model weights is hosted on Hugging Face:
+
+- https://huggingface.co/Gertlek/DetectiveSAM
 
 ## What is bundled
 
-- Inference checkpoints under `checkpoints/`
+- Inference checkpoint configs under `checkpoints/`
 - SAM2 config under `sam2configs/`
 - Poster demo pairs under `demo/cocoglide/`, `demo/flux_test/`, and `demo/qwen_test/`
 - A drop-in single-image slot at `demo/user_image/demo_input.png`
@@ -22,13 +24,34 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Then add the SAM2 Hiera Base Plus checkpoint at:
+Then download the large weights from Hugging Face:
 
-```text
-sam2configs/sam2.1_hiera_base_plus.pt
+```bash
+pip install -U huggingface_hub
+hf download Gertlek/DetectiveSAM \
+  checkpoints/model_epoch22_batch999_score1.1114.pth \
+  checkpoints/detective_sam_sota.pth \
+  sam2configs/sam2.1_hiera_base_plus.pt \
+  --local-dir .
 ```
 
-The expected path is also documented in `sam2configs/README.md`.
+The expected checkpoint paths are also documented in `checkpoints/README.md` and `sam2configs/README.md`.
+
+## Hugging Face Usage
+
+For the simplest setup, clone the Hugging Face repo directly:
+
+```bash
+git lfs install
+git clone https://huggingface.co/Gertlek/DetectiveSAM
+cd DetectiveSAM
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m detectivesam_inference.predict \
+  --checkpoint detective_sam \
+  --output-dir outputs/poster_baseline
+```
 
 ## Poster Demo Flows
 
@@ -78,6 +101,18 @@ python -m detectivesam_inference.predict \
   --output-dir outputs/poster_qwen
 ```
 
+### 4. Bundled CocoGlide subset sweep
+
+Use this to evaluate the bundled banana and train CocoGlide demo pairs.
+
+```bash
+python -m detectivesam_inference.evaluate \
+  --checkpoint detective_sam \
+  --dataset-root demo/cocoglide \
+  --output-dir outputs/poster_eval_cocoglide \
+  --num-visualizations 2
+```
+
 ## Outputs
 
 Each `predict` run writes a compact set of visual artifacts plus a JSON summary:
@@ -99,5 +134,5 @@ The `evaluate` command writes `summary.json` plus a few visualization examples u
 
 - The runtime selects `cuda` automatically when available and otherwise runs on CPU.
 - Checkpoint settings come from the YAML sidecars in `checkpoints/`; you only need the alias or checkpoint path.
-- The public repo does not bundle `sam2configs/sam2.1_hiera_base_plus.pt`; add that file locally before running inference.
+- The GitHub repo does not bundle `.pth` or `.pt` weight files; download them from the Hugging Face repo before running inference.
 - This repo does not include training code or training-only dependencies.
