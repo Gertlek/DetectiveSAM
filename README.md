@@ -136,3 +136,7 @@ The `evaluate` command writes `summary.json` plus a few visualization examples u
 - Checkpoint settings come from the YAML sidecars in `checkpoints/`; you only need the alias or checkpoint path.
 - The GitHub repo does not bundle `.pth` or `.pt` weight files; download them from the Hugging Face repo before running inference.
 - This repo does not include training code or training-only dependencies.
+
+## License
+
+This project is released under the [MIT License](LICENSE).
